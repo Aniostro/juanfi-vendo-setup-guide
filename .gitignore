@@ -1,0 +1,14 @@
+# Real credentials and real router exports live here. Never commit them.
+config.rsc
+*.local.rsc
+*.backup
+*.export.rsc
+.env
+
+# The actual JuanFi distribution (portal HTML, NodeMCU firmware, flasher tools).
+# These are JuanFi's own files, not this repo's -- drop your own copy in locally,
+# do not commit it here.
+/vendor/
+/release-4.4/
+*.bin
+*.exe
