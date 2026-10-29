@@ -5,10 +5,13 @@ config.rsc
 *.export.rsc
 .env
 
-# The actual JuanFi distribution (portal HTML, NodeMCU firmware, flasher tools).
-# These are JuanFi's own files, not this repo's -- drop your own copy in locally,
-# do not commit it here.
+# The NodeMCU firmware and flasher tools (binary, platform-specific). Keep your own
+# local copy of the release bundle alongside this repo; it isn't tracked here.
 /vendor/
 /release-4.4/
 *.bin
 *.exe
+
+# Live per-session marker files and device backups -- instance data, not a template.
+/hotspot/data/
+system.data

@@ -1,95 +1,26 @@
-# income-and-reports.example.rsc
-# Running income counters, their daily/monthly resets, and the end-of-day
-# Telegram + email sales report. Optional: the vendo works without this file,
-# but you lose the daily digest and the today/monthly totals in each sale alert.
+# daily-report.example.rsc
+# OPTIONAL extension -- not part of JuanFi's official release. Adds an end-of-day
+# Telegram + email sales digest at 23:55, derived from a working hAP lite install.
 #
-# Fixes applied vs. the original export this was derived from:
-#  - todayincome / monthlyincome reset to 0 (were live totals, not useful as a template)
-#  - rate table typo '0e:00:00' corrected to '14:00:00' (a 14h/P25 voucher was being
-#    reported as unmatched in the daily report)
-#  - 'uptime restore' scheduler: fixed a missing '$' on hsolduptime that likely made
-#    the restore-after-reboot calculation fail (RouterOS treats a bare word, not a
-#    dereferenced variable, as the literal text 'hsolduptime'). Not confirmed on
-#    real hardware -- test this one specifically (see README).
+# Fix applied: the rate table had a typo, '0e:00:00', with no 14-hour entry to
+# match -- a 14h/P25 voucher would show up as 'unmatched' in the report. Corrected
+# to '14:00:00' below.
 #
-# NOT included here (see README 'Known issues to check on your own router' section):
-#  - 'juanfi-sale-alert-sched' / 'juanfi-seen-reset' schedulers: these referenced a
-#    script that did not exist in the source export, so they would error every run.
-#  - Per-voucher one-shot cleanup schedulers: these are created automatically at
-#    runtime by the on-login script in hotspot-login-logic.example.rsc, not something
-#    to import by hand.
+# Requires base-income-and-uptime.example.rsc already imported (uses its
+# todayincome/monthlyincome running totals) and network-and-hotspot.example.rsc's
+# clock/NTP setup for correct daily timing.
 #
 # Replace <BOT_TOKEN>, <CHAT_ID>, <YOUR_GMAIL_ADDRESS>, <GMAIL_APP_PASSWORD> below.
-# Import this AFTER hotspot-login-logic.example.rsc.
-
-/system clock
-set time-zone-name=Asia/Manila
+# Requires a Gmail App Password (Google Account -> Security -> App passwords).
 
 /system scheduler
-add interval=5s name="uptime backup" on-event=":local hsactiveuptime;\r\
-    \n:local hsuser;\r\
-    \n:local hslimit;\r\
-    \n\r\
-    \n:if ([/ip hotspot active print count-only] > 0) do={\r\
-    \n:foreach i in=[/ip hotspot active find] do={\r\
-    \n:set hsactiveuptime [/ip hotspot active get \$i uptime];\r\
-    \n:set hsuser [/ip hotspot active get \$i user];\r\
-    \n:set hslimit [/ip hotspot user get \$hsuser limit-uptime];\r\
-    \n/system scheduler set [find where name=\$hsuser] comment=\"temp \$hsacti\
-    veuptime\";\r\
-    \n\t\t}\r\
-    \n\t}\r\
-    \n" policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
-    start-time=startup
-
-add name="uptime restore" on-event=":local ucom;\r\
-    \n:local hsolduptime;\r\
-    \n:local hsnewuptime;\r\
-    \n:local hsactiveuptime;\r\
-    \n:local hsuser;\r\
-    \n:local temp; \r\
-    \n:foreach ie in=[/sys sch find] do={\r\
-    \n :set \$ucom [/sys sch get \$ie comment]; \r\
-    \n:if (\$ucom != \"\") do={ \r\
-    \n:set \$temp [:pick \$ucom 0 4];\r\
-    \n:if (\$temp = \"temp\") do={\r\
-    \n   :set \$hsuser [/sys sch get \$ie name]; \r\
-    \n:if ([/ip hotspot user find name=\$hsuser]) do={\r\
-    \n:set \$hsolduptime [/ip hotspot user get [find where name=\$hsuser] limi\
-    t-uptime];\r\
-    \n:set \$hsactiveuptime [:pick \$ucom 5 ([:len \$ucom] + 1)]; \r\
-    \n:set \$hsnewuptime (\$hsolduptime - \$hsactiveuptime);\r\
-    \n/ip hotspot user set [find where name=\$hsuser] limit-uptime=\$hsnewupti\
-    me;\r\
-    \n/sys sch set [find where name=\$hsuser] comment=\"\";} else={ /sys sch r\
-    emove \$ie;}\r\
-    \n}}}" policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
-    start-time=startup
-
-add interval=1d name="Reset Daily Income" on-event=\
-    "/system script set source=\"0\" todayincome " policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
-    start-date=sep/28/2021 start-time=00:00:00
-
-add interval=4w2d name="Reset Monthly Income" on-event=\
-    "/system script set source=\"0\" monthlyincome " policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
-    start-date=sep/28/2021 start-time=00:00:00
-
 add interval=1d name=juanfi-daily-email-sched on-event=\
     "/system script run juanfi-daily-email" policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
     start-date=jun/14/2026 start-time=23:55:00
 
+
 /system script
-add dont-require-permissions=no name=todayincome owner=*sys policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source="0"
-
-add dont-require-permissions=no name=monthlyincome owner=*sys policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source="0"
-
 add dont-require-permissions=no name=juanfi-daily-email owner=admin policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=":\
     local botToken \"<BOT_TOKEN>\"\
@@ -260,6 +191,7 @@ add dont-require-permissions=no name=juanfi-daily-email owner=admin policy=\
     \n/tool fetch url=(\"https://api.telegram.org/bot\" . \$botToken . \"/send\
     Message\") http-method=post http-data=(\"chat_id=\" . \$chatId . \"&text=\
     \" . \$tgText) keep-result=no"
+
 
 /tool e-mail
 set address=smtp.gmail.com from=<YOUR_GMAIL_ADDRESS> password=\

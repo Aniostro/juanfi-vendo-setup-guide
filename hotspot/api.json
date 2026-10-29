@@ -1,0 +1,15 @@
+{
+   "status": "$(if logged-in == 'yes')Connected$(else)Disconnected$(endif)",
+$(if session-timeout-secs != 0)
+   "timeleft": $(session-timeout-secs),
+$(endif)
+$(if remain-bytes-total)
+   "bytesRemaining": $(remain-bytes-total),
+$(endif)
+   "voucher": "$(username)",
+   "mac": "$(mac)",
+   "ip": "$(ip)",
+   "interfaceName": "$(interface-name)",
+   "trial": "$(trial)",
+   "loginBy": "$(login-by)"
+}

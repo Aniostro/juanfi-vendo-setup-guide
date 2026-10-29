@@ -1,0 +1,47 @@
+{
+    "Settings" : {
+        "vendo_option"          :   0,
+        "username_only"         :   true,
+        "currency"              :   "₱",
+        "footer_text"           :   "JuanFi Portal",
+        "footer_link"           :   "https://www.youtube.com/channel/UC8PaJnzd84565zzPNlIDBrA",
+        "voucher_input"         :   true,
+        "pause_button"          :   true,
+        "member_logout_button"  :   false,
+        "trial_logout_button"   :   false,
+        "subscription"          :   false,
+        "custom_theme"          :   false,
+        "internet_status"       :   true,
+        "gcash_payment"         :   false
+    },
+
+    "subscription_prefix" : ["ME", "Vc", "MO", "Ec"],
+
+    "custom_theme" :{
+        "background" :  "#282828",
+        "container"  :  "white",
+        "color"      :  "red",
+        "textcolor"  :  ""
+    },
+
+    "no_internet_settings" : {
+        "insertcoin"               :    false,
+        "auto_pause"               :    false,
+        "internet_status_tittle"   :    "No Internet",
+        "internet_status_text"     :    "Some actions aren't available OFFLINE. Please contact the vendo owner."
+    },
+
+    "gcash_payment" :{
+        "payment_gateway": "<GCASH_PAYMENT_GATEWAY_URL>",
+        "portal_key" : "<GCASH_PORTAL_KEY>"
+    },
+
+    "VendoAddresses" : [
+        {
+            "ssid"            :   "<YOUR_SSID>",
+            "vendoName"       :   "<YOUR_VENDO_NAME>",
+            "vendoIp"         :   "10.0.0.5",
+            "interfaceName"   :   "bridge.HS"
+        }
+    ]
+}

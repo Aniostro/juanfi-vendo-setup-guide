@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>JuanFi Login Portal</title>
+	<link rel="stylesheet" href="assets/css/style.css?printer=1.0betagc-7.2">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body id="body" data-interface="$(interface-name)">
+	<div class="row">
+		<img src="MainPic.PNG" class="img-fluid" alt="" style="max-width:100%;min-width: 90%; height: auto;"/>
+ <div style="margin-top: -10px;"></div>
+      
+
+		<div class="banner">
+			<div class="ribbon-wrapper">
+				<div data-vendo class="ribbon">
+					PC Toolbox
+				</div>
+			</div>
+			<h2 data-ssid>XKids WiFi Vendo</h2>
+		</div>
+
+		<div class="container">
+			<div class="content">
+				<div class="time-wrapper ">
+					<span id="timer">
+						<div class="d-flex flex-fill align-content-stretch">
+							<div class="inner-wrapper">
+								<div id="min">00</div>
+								<div>minutes</div>
+							</div>
+							<div class="inner-wrapper">
+								<div id="sec">00</div>
+								<div>seconds</div>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="details">
+			<div id="details"> 
+			<p><b>Status:</b><span id="status">Disconnected</span></p>
+			<small>$(ip) | $(mac) </small><br>
+			<small id="Exp">Expiration: <span id="exp">--</span></small>
+			
+		</div>
+		<div style="margin-bottom: 0px;"></div>
+		<div class="btn-group">
+
+			<button type="button" class="btn btn-primary" id="insertBtn">Insert Coin</button>
+			<div style="margin-bottom: 5px;"> </div>
+			<button type="button" class="btn btn-warning" id="pauseBtn">Pause</button>
+			<div style="margin-bottom: 5px;"> </div>
+			<button type="button" class="btn btn-danger" id="ratesBtn">Wifi Rates</button>
+			<div style="margin-bottom: 5px;"> </div>
+			<button type="button" class="btn btn-success" id="memberBtn">Member Login</button>
+			<div style="margin-bottom: 5px;"> </div>
+			<button type="button" class="btn btn-info" id="gcashBtn">Gcash</button>
+			<div style="margin-bottom: 5px;"> </div>
+			<div class="input-group">
+				<div class="d-flex flex-fill align-content-stretch">
+					<input type="text" id="username" value="" placeholder="Voucher Here..">
+					<button type="button" id="submit" class=" submit">Submit</button>
+				</div>
+			</div>
+		</div>
+		<div style="margin-bottom: -20px;"></div>
+		<footer class="main-footer">
+			<b>Powered by: <a id="link" href="#">PC Toolbox</a><br></b>© All Rights Reserved 2023<br>
+		</footer>
+	</div>
+		<div class="modal" data-insert-coin tabindex="-1">
+			<div class="modal-dialog">
+				<div class="header">Please Insert Coin</div>
+				<div class="progress-bar"></div>
+				<div id="insBody">
+					<hr>
+					<table>
+						<tr>
+							<td>
+								<p><b>Amount:</b>
+							</td>
+							<td class="span">
+								<span id="totalCoin">₱ 0</span>.00
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p><b>Time:</b></p>
+							</td>
+							<td>
+								<span id="totalTime">--:--</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p><b>Validity:</b></p>
+							</td>
+							<td>
+								<span id="validity">--:--</span>
+							</td>
+						</tr>
+					</table>
+					<br>
+					<hr>
+					<br>
+					<button data-ic-close class="btn btn-secondary">Cancel</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal" data-select-vendo>
+			<div class="modal-dialog">
+				<div class="header">Chose Your Location</div>
+				<hr>
+				<div id="selectVendo"></div>
+				<hr>
+				<button data-sv-close class="btn btn-secondary">Close</button>
+			</div>
+		</div>
+		<div class="modal" data-rates>
+			<div class="modal-dialog">
+				<div class="header">Wifi Rates</div>
+				<div id="ratesBody">
+					<hr>
+					<table>
+						<thead>
+							<tr>
+								<td>Amount</td>
+								<td>Time</td>
+								<td>Validity</td>
+							</tr>
+						</thead>
+						<tbody id="rates"></tbody>
+					</table>
+					<br>
+					<button data-wr-close class="btn btn-secondary">Close</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal" data-gcash tabindex="-1">
+			<div class="modal-dialog">
+				<div class="header">Buy voucher using GCash</div>
+				<div id="mlBody">
+					<hr>
+					<input type="number" id="gcNumber" placeholder="mobile #" />
+					<input type="number" id="gcAmount" placeholder="amount" />
+					<hr>
+					<br>
+					<div class="btn-footer">
+						<button data-gc-close class="btn btn-secondary">Cancel</button>
+						<button data-gc-pay class="btn btn-primary">Pay</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" data-member tabindex="-1">
+			<div class="modal-dialog">
+				<div class="header">Login to Connect</div>
+				<div id="mlBody">
+					<hr>
+					<input type="username" id="Muser" placeholder="Username" />
+					<input type="password" id="Mpass" placeholder="Password" />
+					<hr>
+					<br>
+					<div class="btn-footer">
+						<button data-ml-close class="btn btn-secondary">Cancel</button>
+						<button data-login class="btn btn-primary">Login</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" data-dialog tabindex="-1">
+			<div class="modal-dialog">
+				<div class="header"></div>
+				<div class="progress-bar"></div>
+			</div>
+		</div>
+		<div class="modal" data-trial tabindex="-1">
+			<div class="modal-dialog">
+				<div class="header">Claim free trial</div>
+				<hr>
+				<br>
+				<div class="btn-footer">
+					<button data-trl-close class="btn btn-secondary">Cancel</button>
+					<button data-claim class="btn btn-primary">Claim</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal" data-message tabindex="-1">
+			<div class="modal-dialog dialog-small">
+				<div class="header"></div>
+				<hr>
+				<span id="message"></span>
+				<hr>
+				<br>
+				<button data-msg-close class="btn btn-secondary">Okay</button>
+			</div>
+		</div>
+	<br>
+	<script src="assets/js/kitricks.js?printer=1.0betagc-7.2"></script>
+
+</body>
