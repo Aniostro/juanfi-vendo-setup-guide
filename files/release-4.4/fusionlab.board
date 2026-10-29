@@ -1,0 +1,17 @@
+{
+	"maker": "Fusionlab customboard",
+	"hardwareType": "ESP32",
+	"instructions": "Please click the save button after",
+	"version": "1.0",
+	"coinSlotPin": "13",
+	"coinSlotSetPin": "12",
+	"systemReadyLEDPin": "5",
+    "insertCoinLEDPin": "23",
+	"insertCoinBtnPin": "14",
+	"nightLightPin": "-1",
+	"ethPowerPin": "16",
+	"ethMdcPin": "23",
+    "ethMdioPin": "18",
+    "lcdSDAPin": "33",
+    "lcdSCLPin": "32"
+}
